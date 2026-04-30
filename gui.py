@@ -3,6 +3,7 @@ from tkinter import ttk
 
 from game import Board
 from ai import best_move
+from stats import StatsTracker
 
 MODE_HVH = "Human vs Human"
 MODE_HVC = "Human vs Computer"
@@ -23,9 +24,13 @@ class TicTacToeApp:
         self.human_side_var = tk.StringVar(value="X")
         self.status_var = tk.StringVar(value="X's turn")
         self._pending_after = None
+        self._stats = StatsTracker()
+        self._stats.load()
+        self._result_recorded = False
 
         self._build_controls()
         self._build_board()
+        self._build_stats()
         self._build_status()
         self._refresh()
 
@@ -63,9 +68,16 @@ class TicTacToeApp:
             btn.grid(row=i // 3, column=i % 3, padx=2, pady=2)
             self.buttons.append(btn)
 
+    def _build_stats(self):
+        frame = ttk.Frame(self.root, padding=(10, 0))
+        frame.grid(row=2, column=0, sticky="ew")
+        self._stats_var = tk.StringVar()
+        ttk.Label(frame, textvariable=self._stats_var).pack(side="left")
+        ttk.Button(frame, text="Reset Stats", command=self._reset_stats).pack(side="right")
+
     def _build_status(self):
         status = ttk.Label(self.root, textvariable=self.status_var, padding=(10, 0, 10, 10))
-        status.grid(row=2, column=0, sticky="ew")
+        status.grid(row=3, column=0, sticky="ew")
 
     def _on_mode_change(self):
         if self.mode_var.get() == MODE_HVC:
@@ -74,7 +86,13 @@ class TicTacToeApp:
             self.side_menu.configure(state="disabled")
         self._new_game()
 
+    def _reset_stats(self):
+        self._result_recorded = False
+        self._stats.reset()
+        self._refresh_stats()
+
     def _new_game(self):
+        self._result_recorded = False
         if self._pending_after is not None:
             self.root.after_cancel(self._pending_after)
             self._pending_after = None
@@ -118,6 +136,10 @@ class TicTacToeApp:
         self._refresh()
         self._maybe_schedule_ai()
 
+    def _refresh_stats(self):
+        s = self._stats
+        self._stats_var.set(f"X wins: {s.x_wins}   O wins: {s.o_wins}   Draws: {s.draws}")
+
     def _refresh(self):
         for i, btn in enumerate(self.buttons):
             btn.configure(text=self.board.cells[i])
@@ -128,3 +150,7 @@ class TicTacToeApp:
             self.status_var.set("Draw")
         else:
             self.status_var.set(f"{self.board.current_player}'s turn")
+        if self.board.is_game_over() and not self._result_recorded:
+            self._stats.record(winner if winner else "draw")
+            self._result_recorded = True
+        self._refresh_stats()

@@ -83,3 +83,23 @@ tic_tac_toe/
 - Variable board sizes (NxN).
 - Network play.
 - Persisting games to disk.
+
+---
+
+## Version History
+
+### v1 — Initial implementation
+Core game with Tkinter GUI, minimax AI, three game modes (Human vs Human, Human vs Computer, Computer vs Computer), and 16 unit tests covering board logic and AI behavior.
+(See original plan above.)
+
+### v2 — Persistent statistics
+**Added:** Per-player win/draw tracking that persists across app restarts. Stats are displayed in the GUI at all times and can be reset by the user.
+
+New files:
+- `stats.py` — `StatsTracker` class: JSON persistence with atomic writes (write-then-rename), silent fallback to zeros on missing/corrupt file, `record()` / `reset()` / `load()` / `save()` API.
+- `tests/test_stats.py` — 10 unit tests for `StatsTracker` (using `tempfile`, no real `stats.json` touched).
+- `stats.json` — auto-created at runtime in the project directory; git-ignored.
+
+Changed files:
+- `gui.py` — stats bar (row 2) added between the board and status label; Reset Stats button; `_result_recorded` guard prevents double-counting when `_refresh()` is called multiple times on a finished board; status label shifted to row 3.
+- `.gitignore` — excludes `stats.json` so user data is not committed.

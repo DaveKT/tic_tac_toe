@@ -1,12 +1,13 @@
 # Tic Tac Toe
 
-A small Python tic-tac-toe game with a Tkinter GUI, three game modes, and an unbeatable minimax AI.
+A small Python tic-tac-toe game with a Tkinter GUI, three game modes, an unbeatable minimax AI, and persistent per-player statistics.
 
 ## Features
 
 - **Three modes:** Human vs Human, Human vs Computer, Computer vs Computer
 - **Unbeatable AI** using the classic minimax algorithm — the best you can do is draw
 - **Pick your side** (X or O) when playing against the computer
+- **Persistent statistics** — X wins, O wins, and draws are tracked across sessions and saved to `stats.json`; click **Reset Stats** to clear them
 - **Pure-logic core** separated from the UI, so it's easy to test and extend
 - **Zero third-party dependencies** — just Python's standard library
 
@@ -18,10 +19,13 @@ tic_tac_toe/
 ├── game.py          # Board: state, moves, win/draw detection
 ├── ai.py            # Minimax AI
 ├── gui.py           # Tkinter window, mode selection, board rendering
+├── stats.py         # StatsTracker: persistent JSON statistics
+├── stats.json       # Auto-created at runtime; git-ignored
 ├── tests/
 │   ├── test_game.py # Board logic tests
-│   └── test_ai.py   # AI behavior tests
-├── PLAN.md          # Original development plan
+│   ├── test_ai.py   # AI behavior tests
+│   └── test_stats.py # StatsTracker tests
+├── PLAN.md          # Development plan (versioned)
 └── README.md
 ```
 
@@ -48,8 +52,8 @@ python3 main.py
 
 ## Running the tests
 
-16 unit tests cover board logic and AI behavior (including a sweep proving the
-AI never loses against any legal opening). Tests don't need Tk:
+26 unit tests cover board logic, AI behavior (including a sweep proving the
+AI never loses against any legal opening), and statistics persistence. Tests don't need Tk:
 
 ```bash
 uv run --python 3.13 -m unittest discover tests -v
@@ -66,6 +70,7 @@ python3 -m unittest discover tests -v
    - **Computer vs Computer** — watch two perfect players draw forever
 3. Click any empty cell to place your mark.
 4. Hit **New Game** to reset.
+5. Running totals for X wins, O wins, and draws are shown below the board and persist between sessions. Click **Reset Stats** to clear them.
 
 ## Architecture notes
 
@@ -77,3 +82,12 @@ python3 -m unittest discover tests -v
   memoization is needed — the implementation is intentionally simple.
 - Computer moves are scheduled with `root.after()` so the UI repaints between
   turns and Computer-vs-Computer games animate rather than resolving instantly.
+- `StatsTracker` writes `stats.json` atomically (write to a `.tmp` file, then
+  rename) so a crash mid-save cannot corrupt the persisted data.
+
+## Version history
+
+| Version | What changed |
+|---------|-------------|
+| v1 | Initial release: Tkinter GUI, minimax AI, three game modes, 16 unit tests |
+| v2 | Persistent statistics: X wins / O wins / draws saved to `stats.json`, Reset Stats button, 10 new unit tests |
