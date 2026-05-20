@@ -1,11 +1,13 @@
 # Tic Tac Toe
 
-A small Python tic-tac-toe game with a Tkinter GUI, three game modes, an unbeatable minimax AI, and persistent per-player statistics.
+A small Python tic-tac-toe game with a Tkinter GUI, three game modes, a minimax AI with selectable difficulty, and persistent per-player statistics.
 
 ## Features
 
 - **Three modes:** Human vs Human, Human vs Computer, Computer vs Computer
-- **Unbeatable AI** using the classic minimax algorithm — the best you can do is draw
+- **Two difficulty levels** in Human vs Computer mode:
+  - **Hard** — unbeatable minimax; the best you can do is draw
+  - **Easy** — depth-limited minimax that takes wins and blocks immediate losses, but misses forks and multi-move combinations; beatable with good play
 - **Pick your side** (X or O) when playing against the computer
 - **Persistent statistics** — X wins, O wins, and draws are tracked across sessions and saved to `stats.json`; click **Reset Stats** to clear them
 - **Pure-logic core** separated from the UI, so it's easy to test and extend
@@ -52,8 +54,7 @@ python3 main.py
 
 ## Running the tests
 
-26 unit tests cover board logic, AI behavior (including a sweep proving the
-AI never loses against any legal opening), and statistics persistence. Tests don't need Tk:
+31 unit tests cover board logic, AI behavior (including sweeps proving Hard never loses and Easy can be beaten by optimal play), and statistics persistence. Tests don't need Tk:
 
 ```bash
 uv run --python 3.13 -m unittest discover tests -v
@@ -66,7 +67,7 @@ python3 -m unittest discover tests -v
 1. Launch the game.
 2. Pick a mode from the dropdown:
    - **Human vs Human** — hot-seat play on the same machine
-   - **Human vs Computer** — choose whether you play X or O
+   - **Human vs Computer** — choose whether you play X or O, and select Easy or Hard difficulty
    - **Computer vs Computer** — watch two perfect players draw forever
 3. Click any empty cell to place your mark.
 4. Hit **New Game** to reset.
@@ -78,6 +79,7 @@ python3 -m unittest discover tests -v
   and reuse. The GUI is a thin layer that calls into it.
 - `ai.minimax` recurses on copies of the board (`Board.copy()`), so it never
   mutates real game state.
+- Easy difficulty uses a `max_depth=2` cap on minimax — the AI sees one full move-pair ahead (enough to take wins and block immediate losses) but cannot find forks or deeper combinations.
 - The 3×3 search tree is small enough that no alpha-beta pruning or
   memoization is needed — the implementation is intentionally simple.
 - Computer moves are scheduled with `root.after()` so the UI repaints between
@@ -91,3 +93,4 @@ python3 -m unittest discover tests -v
 |---------|-------------|
 | v1 | Initial release: Tkinter GUI, minimax AI, three game modes, 16 unit tests |
 | v2 | Persistent statistics: X wins / O wins / draws saved to `stats.json`, Reset Stats button, 10 new unit tests |
+| v3 | Beatable computer: Easy difficulty (depth-limited minimax) added alongside Hard; difficulty selector in Human vs Computer mode; 5 new unit tests |
