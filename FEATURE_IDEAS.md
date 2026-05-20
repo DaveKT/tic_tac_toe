@@ -10,8 +10,8 @@ The current UI omits the classic tic-tac-toe hash grid. The spaces between cells
 
 Add black lines between cells to produce the traditional hatch grid.
 
-## Beatable Computer Option
+## ~~Beatable Computer Option~~
 
-The computer opponent was originally designed to always make the optimal move, making it unbeatable. This can reduce replay value.
+~~The computer opponent was originally designed to always make the optimal move, making it unbeatable. This can reduce replay value.~~
 
-Add an option for a computer opponent that is challenging but beatable.
+~~Add an option for a computer opponent that is challenging but beatable.~~
