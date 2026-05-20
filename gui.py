@@ -22,6 +22,7 @@ class TicTacToeApp:
         self.board = Board()
         self.mode_var = tk.StringVar(value=MODE_HVH)
         self.human_side_var = tk.StringVar(value="X")
+        self.difficulty_var = tk.StringVar(value="Hard")
         self.status_var = tk.StringVar(value="X's turn")
         self._pending_after = None
         self._stats = StatsTracker()
@@ -50,7 +51,15 @@ class TicTacToeApp:
         )
         self.side_menu.grid(row=0, column=3, padx=(4, 12), sticky="w")
 
-        ttk.Button(controls, text="New Game", command=self._new_game).grid(row=0, column=4, sticky="e")
+        ttk.Label(controls, text="Difficulty:").grid(row=0, column=4, sticky="w")
+        self.difficulty_menu = ttk.OptionMenu(
+            controls, self.difficulty_var, "Hard", "Easy", "Hard",
+            command=lambda _=None: self._new_game()
+        )
+        self.difficulty_menu.grid(row=0, column=5, padx=(4, 12), sticky="w")
+        self.difficulty_menu.configure(state="disabled")
+
+        ttk.Button(controls, text="New Game", command=self._new_game).grid(row=0, column=6, sticky="e")
 
     def _build_board(self):
         frame = ttk.Frame(self.root, padding=10)
@@ -82,8 +91,10 @@ class TicTacToeApp:
     def _on_mode_change(self):
         if self.mode_var.get() == MODE_HVC:
             self.side_menu.configure(state="normal")
+            self.difficulty_menu.configure(state="normal")
         else:
             self.side_menu.configure(state="disabled")
+            self.difficulty_menu.configure(state="disabled")
         self._new_game()
 
     def _reset_stats(self):
@@ -131,7 +142,12 @@ class TicTacToeApp:
             return
         if not self._is_ai_turn():
             return
-        move = best_move(self.board, self.board.current_player)
+        difficulty = (
+            self.difficulty_var.get().lower()
+            if self.mode_var.get() == MODE_HVC
+            else "hard"
+        )
+        move = best_move(self.board, self.board.current_player, difficulty)
         self.board.make_move(move)
         self._refresh()
         self._maybe_schedule_ai()

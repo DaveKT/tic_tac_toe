@@ -103,3 +103,11 @@ New files:
 Changed files:
 - `gui.py` — stats bar (row 2) added between the board and status label; Reset Stats button; `_result_recorded` guard prevents double-counting when `_refresh()` is called multiple times on a finished board; status label shifted to row 3.
 - `.gitignore` — excludes `stats.json` so user data is not committed.
+
+### v3 — Beatable computer option
+**Added:** Easy difficulty for the computer opponent. Easy uses depth-limited minimax (`max_depth=2`), which takes immediate wins and blocks immediate losses but cannot see forks or multi-move combinations — making it beatable with good play. Hard retains the original unbeatable minimax. Difficulty selection is only active in Human vs Computer mode; Computer vs Computer always plays at full strength.
+
+Changed files:
+- `ai.py` — `minimax()` gains an optional `max_depth` parameter; `best_move()` gains a `difficulty` parameter (`"easy"` or `"hard"`, default `"hard"`).
+- `gui.py` — Difficulty dropdown added to the control bar; enabled only in Human vs Computer mode; `_play_ai_turn()` passes the selected difficulty to `best_move()`.
+- `tests/test_ai.py` — 5 new tests: easy takes wins, easy blocks losses, hard is identical to the default, easy is beatable by optimal X, hard is never beaten.
