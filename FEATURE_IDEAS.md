@@ -10,6 +10,18 @@ The current UI omits the classic tic-tac-toe hash grid. The spaces between cells
 
 Add black lines between cells to produce the traditional hatch grid.
 
+## Online Multiplayer
+
+The app currently only supports local play, requiring both players to share the same device. There is no way to play against a remote opponent over a network.
+
+Add online multiplayer support so that two players can connect over a network and play against each other in real time from separate devices.
+
+## Dark Mode
+
+The current UI uses a fixed light theme with no option to switch to a darker color scheme. Users who prefer lower-brightness interfaces or work in low-light environments have no alternative.
+
+Add a dark mode toggle that switches the board, background, and text colors to a dark theme, persisting the user's preference across sessions.
+
 ## ~~Beatable Computer Option~~
 
 ~~The computer opponent was originally designed to always make the optimal move, making it unbeatable. This can reduce replay value.~~
