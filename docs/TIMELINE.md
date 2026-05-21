@@ -49,3 +49,12 @@
   - Sync stats to play mode (reset stats on mode change)
   - Add classic hash-grid lines to the UI
   - ~~Beatable computer option~~ (completed in v3, struck through)
+
+---
+
+## 2026-05-21 — Security Review & Repository Organisation
+
+- Full security review of all source files (`main.py`, `game.py`, `ai.py`, `gui.py`, `stats.py`)
+- No exploitable vulnerabilities found; findings documented in `docs/SECURITY_REPORT.md`
+- Moved project documentation (`PLAN.md`, `TIMELINE.md`, `FEATURE_IDEAS.md`, `SECURITY_REPORT.md`) into a new `docs/` folder
+- Updated `README.md` project layout section to reflect the new structure

@@ -24,10 +24,14 @@ tic_tac_toe/
 ├── stats.py         # StatsTracker: persistent JSON statistics
 ├── stats.json       # Auto-created at runtime; git-ignored
 ├── tests/
-│   ├── test_game.py # Board logic tests
-│   ├── test_ai.py   # AI behavior tests
+│   ├── test_game.py  # Board logic tests
+│   ├── test_ai.py    # AI behavior tests
 │   └── test_stats.py # StatsTracker tests
-├── PLAN.md          # Development plan (versioned)
+├── docs/
+│   ├── PLAN.md           # Development plan (versioned)
+│   ├── TIMELINE.md       # Project timeline
+│   ├── FEATURE_IDEAS.md  # Backlog of future feature ideas
+│   └── SECURITY_REPORT.md # Security vulnerability review
 └── README.md
 ```
 
