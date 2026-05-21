@@ -58,3 +58,4 @@
 - No exploitable vulnerabilities found; findings documented in `docs/SECURITY_REPORT.md`
 - Moved project documentation (`PLAN.md`, `TIMELINE.md`, `FEATURE_IDEAS.md`, `SECURITY_REPORT.md`) into a new `docs/` folder
 - Updated `README.md` project layout section to reflect the new structure
+- Added two new feature ideas to `docs/FEATURE_IDEAS.md`: Online Multiplayer and Dark Mode
