@@ -1,3 +1,5 @@
+[![Tic Tac Toe](https://github.com/DaveKT/tic_tac_toe/actions/workflows/python-app.yml/badge.svg)](https://github.com/DaveKT/tic_tac_toe/actions/workflows/python-app.yml)
+
 # Tic Tac Toe
 
 A small Python tic-tac-toe game with a Tkinter GUI, three game modes, a minimax AI with selectable difficulty, and persistent per-player statistics.
